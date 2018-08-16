@@ -12,6 +12,7 @@ const play = require('./commands/play');
 const skip = require('./commands/skip');
 const queue = require('./commands/queue');
 const search = require('./commands/search');
+const remove = require('./commands/remove');
 const help = require('./commands/help');
 
 client.login(token);
@@ -28,11 +29,11 @@ client.on('message', message => {
   if (!message.guild) return;
 
   if (
-    db.get('search').value().length !== 0
+    db.get('search').filter({ guildid: message.guild.id }).value().length !== 0
     && !isNaN(parseInt(message.content))
     && message.member.voiceChannel
   ) {
-    const selected = db.get('search').find({ id: parseInt(message.content) });
+    const selected = db.get('search').find({ id: parseInt(message.content), guildid: message.guild.id });
     if (selected) {
       if (message.member.voiceChannel) {
         message.member.voiceChannel.join()
@@ -43,7 +44,7 @@ client.on('message', message => {
               .write();
 
             _handlerSearch(db, conn, message, selected.value().songid);
-            db.set('search', []).write();
+            db.get('search').remove({ guildid: message.guild.id }).write();
           })
           .catch(logger.info);
       }
@@ -90,12 +91,23 @@ client.on('message', message => {
         search(db, message, args.join(' '));
         break;
 
+      case 'remove':
+        if (message.member.voiceChannel) {
+          message.member.voiceChannel.join()
+            .then(conn => {
+              remove(db, message, conn, args.join(' '));
+            })
+            .catch(logger.info);
+        }
+        break;
+
       case 'leave':
         if (message.member.voiceChannel) {
           message.member.voiceChannel.join()
             .then(conn => {
               message.member.voiceChannel.leave();
               db.get('queue').remove({ guildid: message.guild.id }).write();
+              db.get('search').remove({ guildid: message.guild.id }).write();
             })
             .catch(logger.info);
         }

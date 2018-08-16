@@ -18,7 +18,7 @@ module.exports = function (db, message, keyword) {
       }
     })
     .then(res => {
-      db.set('search', []).write();
+      db.get('search').remove({ guildid: message.guild.id }).write();
       const queue = res.data.itemlist.map((o, i) => {
         const id = i + 1;
         const data = {

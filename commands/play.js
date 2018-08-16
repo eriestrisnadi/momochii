@@ -16,17 +16,19 @@ module.exports = function (db, message, conn, keyword) {
     .then(res => {
       const _first = res.data.itemlist[0];
 
-      db
-        .get('queue')
-        .push({
-          songid: _first.songid,
-          title: Buffer.from(_first.info1, 'base64').toString('ascii'),
-          artist: Buffer.from(_first.info2, 'base64').toString('ascii'),
-          guildid: message.guild.id
-        })
-        .write();
+      if (_first) {
+        db
+          .get('queue')
+          .push({
+            songid: _first.songid,
+            title: Buffer.from(_first.info1, 'base64').toString('ascii'),
+            artist: Buffer.from(_first.info2, 'base64').toString('ascii'),
+            guildid: message.guild.id
+          })
+          .write();
 
-      _handlerSearch(db, conn, message, _first.songid);
+        _handlerSearch(db, conn, message, _first.songid);
+      }
 
     })
     .catch(console.log)
