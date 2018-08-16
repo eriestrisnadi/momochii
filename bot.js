@@ -5,14 +5,14 @@ const low = require('lowdb');
 const Memory = require('lowdb/adapters/Memory');
 const db = low(new Memory());
 db.defaults({ queue: [] }).write();
-const { symbol } = require('./config');
+const { symbol, token } = require('./config');
 
 const play = require('./commands/play');
 const skip = require('./commands/skip');
 const queue = require('./commands/queue');
 const help = require('./commands/help');
 
-client.login('NDU3MzMxODM2NzkyODY0Nzc4.DlQZpQ.tKJuNSHoNdLzI2_TGThv3Z9aqdA');
+client.login(token);
 
 client.on('ready', () => {
   logger.info('Connected');

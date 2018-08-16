@@ -2,12 +2,12 @@ const logger = require('winston');
 const axios = require('axios');
 const { _stream } = require('../utils');
 const { RichEmbed } = require('discord.js');
-const { color } = require('../config');
+const { color, baseJooxUrl } = require('../config');
 const moment = require('moment');
 
 module.exports = function (db, message, conn, keyword) {
   axios
-    .get('http://api-jooxtt.sanook.com/web-fcgi-bin/web_search', {
+    .get(`${baseJooxUrl}web_search`, {
       params: {
         country: "id",
         lang: "en",
@@ -30,7 +30,7 @@ module.exports = function (db, message, conn, keyword) {
         .write();
 
       axios
-        .get('http://api-jooxtt.sanook.com/web-fcgi-bin/web_get_songinfo', {
+        .get(`${baseJooxUrl}web_get_songinfo`, {
           params: {
             country: "id",
             lang: "en",
