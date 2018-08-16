@@ -4,12 +4,14 @@ const logger = require('winston');
 const low = require('lowdb');
 const Memory = require('lowdb/adapters/Memory');
 const db = low(new Memory());
-db.defaults({ queue: [] }).write();
+db.defaults({ queue: [], search: [] }).write();
 const { symbol, token } = require('./config');
+const { _handlerSearch } = require('./utils');
 
 const play = require('./commands/play');
 const skip = require('./commands/skip');
 const queue = require('./commands/queue');
+const search = require('./commands/search');
 const help = require('./commands/help');
 
 client.login(token);
@@ -24,6 +26,29 @@ client.on('message', message => {
   // Voice only works in guilds, if the message does not come from a guild,
   // we ignore it
   if (!message.guild) return;
+
+  if (
+    db.get('search').value().length !== 0
+    && !isNaN(parseInt(message.content))
+    && message.member.voiceChannel
+  ) {
+    const selected = db.get('search').find({ id: parseInt(message.content) });
+    if (selected) {
+      if (message.member.voiceChannel) {
+        message.member.voiceChannel.join()
+          .then(conn => {
+            db
+              .get('queue')
+              .push(selected.value())
+              .write();
+
+            _handlerSearch(db, conn, message, selected.value().songid);
+            db.set('search', []).write();
+          })
+          .catch(logger.info);
+      }
+    }
+  }
 
   if (message.content.split(' ').length !== 0 && message.content.split(' ')[0] == symbol) {
     let args = message.content.split(' ');
@@ -59,6 +84,10 @@ client.on('message', message => {
             })
             .catch(logger.info);
         }
+        break;
+
+      case 'search':
+        search(db, message, args.join(' '));
         break;
 
       case 'leave':

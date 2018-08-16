@@ -1,9 +1,6 @@
-const logger = require('winston');
 const axios = require('axios');
-const { _stream } = require('../utils');
-const { RichEmbed } = require('discord.js');
-const { color, baseJooxUrl } = require('../config');
-const moment = require('moment');
+const { _handlerSearch } = require('../utils');
+const { baseJooxUrl } = require('../config');
 
 module.exports = function (db, message, conn, keyword) {
   axios
@@ -29,35 +26,7 @@ module.exports = function (db, message, conn, keyword) {
         })
         .write();
 
-      axios
-        .get(`${baseJooxUrl}web_get_songinfo`, {
-          params: {
-            country: "id",
-            lang: "en",
-            songid: _first.songid,
-          }
-        })
-        .then(res => {
-          db
-            .get('queue')
-            .find({ songid: _first.songid, guildid: message.guild.id })
-            .assign({ arbitary: res.data.r320Url, thumbnail: res.data.imgSrc, duration: moment.utc(res.data.minterval * 1000).format('mm:ss') })
-            .write();
-
-          const current = db.get('queue').find({ songid: _first.songid }).value();
-          const embeded = new RichEmbed()
-            .setColor(color)
-            .setTitle(`Menambahkan "${current.title} - ${current.artist}" ke daftar lagu.`)
-            .setDescription(`Durasi ${current.duration}`)
-            .setThumbnail(current.thumbnail);
-
-          message.channel.send(embeded);
-
-          if (typeof conn.dispatcher === 'undefined') {
-            _stream(db, conn, message);
-          }
-        })
-        .catch(console.log)
+      _handlerSearch(db, conn, message, _first.songid);
 
     })
     .catch(console.log)
