@@ -1,7 +1,7 @@
-const { RichEmbed } = require('discord.js');
-const { color, symbol } = require('../config');
+import { RichEmbed } from 'discord.js';
+import { color, symbol } from '../config';
 
-module.exports = function (message) {
+export default (message) => {
   const embeded = new RichEmbed()
     .setColor(color)
     .setTitle('Perintah yang didukung oleh bot ini:')

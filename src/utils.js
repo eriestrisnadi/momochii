@@ -1,9 +1,9 @@
-const { RichEmbed } = require('discord.js');
-const axios = require('axios');
-const moment = require('moment');
-const { color, baseJooxUrl } = require('./config');
+import { RichEmbed } from 'discord.js';
+import { get } from 'axios';
+import { utc } from 'moment';
+import { color, baseJooxUrl } from './config';
 
-const _stream = function (db, conn, message) {
+const _stream = (db, conn, message) => {
   if (db.get('queue').value().length !== 0) {
     const item = db.get('queue').filter({ guildid: message.guild.id }).value()[0];
     const embeded = new RichEmbed()
@@ -15,6 +15,11 @@ const _stream = function (db, conn, message) {
     message.channel.send(embeded);
 
     const dispatcher = conn.playArbitraryInput(item.arbitary);
+
+    const playerRepeat = db.get('repeats').find({ guildid: message.guild.id }).value();
+    if (typeof playerRepeat !== 'undefined' && playerRepeat.repeat === true) {
+      db.get('queue').push(item).write();
+    }
 
     dispatcher.on('end', end => {
       db
@@ -37,9 +42,8 @@ const _stream = function (db, conn, message) {
   }
 }
 
-const _handlerSearch = function (db, conn, message, songid) {
-  axios
-    .get(`${baseJooxUrl}web_get_songinfo`, {
+const _handlerSearch = (db, conn, message, songid) => {
+  get(`${baseJooxUrl}web_get_songinfo`, {
       params: {
         country: "id",
         lang: "en",
@@ -50,7 +54,7 @@ const _handlerSearch = function (db, conn, message, songid) {
       db
         .get('queue')
         .find({ songid: songid, guildid: message.guild.id })
-        .assign({ arbitary: res.data.r320Url, thumbnail: res.data.imgSrc, duration: moment.utc(res.data.minterval * 1000).format('mm:ss') })
+        .assign({ arbitary: res.data.r320Url, thumbnail: res.data.imgSrc, duration: utc(res.data.minterval * 1000).format('mm:ss') })
         .write();
 
       const current = db.get('queue').find({ songid: songid, guildid: message.guild.id }).value();
@@ -70,4 +74,4 @@ const _handlerSearch = function (db, conn, message, songid) {
 }
 
 
-module.exports = { _stream: _stream, _handlerSearch: _handlerSearch };
+export { _stream, _handlerSearch };

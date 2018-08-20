@@ -1,7 +1,7 @@
-const { RichEmbed } = require('discord.js');
-const { color } = require('../config');
+import { RichEmbed } from 'discord.js';
+import { color } from '../config';
 
-module.exports = function (db, message) {
+export default (db, message) => {
   if (db.get('queue').filter({ guildid: message.guild.id }).value().length === 0) {
     const embeded = new RichEmbed()
       .setColor(color)

@@ -1,10 +1,9 @@
-const axios = require('axios');
-const { _handlerSearch } = require('../utils');
-const { baseJooxUrl } = require('../config');
+import { get } from 'axios';
+import { _handlerSearch } from '../utils';
+import { baseJooxUrl } from '../config';
 
-module.exports = function (db, message, conn, keyword) {
-  axios
-    .get(`${baseJooxUrl}web_search`, {
+export default (db, message, conn, keyword) => {
+  get(`${baseJooxUrl}web_search`, {
       params: {
         country: "id",
         lang: "en",

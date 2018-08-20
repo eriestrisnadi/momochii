@@ -12,5 +12,12 @@
     "moment": "^2.22.2",
     "node-opus": "^0.3.0",
     "winston": "^3.0.0"
+  },
+  "scripts": {
+    "build": "babel src -o bot.js"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.29.0",
+    "babel-preset-env": "^1.7.0"
   }
 }
