@@ -14,7 +14,8 @@
     "winston": "^3.0.0"
   },
   "scripts": {
-    "build": "babel src -o bot.js"
+    "build": "babel src --out-dir lib",
+    "start": "node lib/bot.js"
   },
   "devDependencies": {
     "babel-cli": "^6.29.0",
