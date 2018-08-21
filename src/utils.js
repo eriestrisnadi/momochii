@@ -16,12 +16,13 @@ const _stream = (db, conn, message) => {
 
     const dispatcher = conn.playArbitraryInput(item.arbitary);
 
-    const playerRepeat = db.get('repeats').find({ guildid: message.guild.id }).value();
-    if (typeof playerRepeat !== 'undefined' && playerRepeat.repeat === true) {
-      db.get('queue').push(item).write();
-    }
-
     dispatcher.on('end', end => {
+      const playerRepeat = db.get('repeats').find({ guildid: message.guild.id }).value();
+
+      if (typeof playerRepeat !== 'undefined' && playerRepeat.repeat === true) {
+        db.get('prequeue').push(item).write();
+      }
+
       db
         .get('queue')
         .remove({ songid: item.songid, guildid: item.guildid })
@@ -32,24 +33,39 @@ const _stream = (db, conn, message) => {
 
     return dispatcher;
   } else {
-    const embeded = new RichEmbed()
-      .setColor(color)
-      .setTitle('Berhasil memutar semua lagu')
-      .setDescription('Meninggalkan channel ...');
+    const playerRepeat = db.get('repeats').find({ guildid: message.guild.id }).value();
 
-    message.channel.send(embeded);
-    return message.member.voiceChannel.leave();
+    if (typeof playerRepeat !== 'undefined' && playerRepeat.repeat === true) {
+      const items = db.get('prequeue').value();
+
+      items.map(o => {
+        db.get('queue').push(o).write();
+        return o;
+      })
+
+      db.get('prequeue').remove({ guildid: message.guild.id }).write();
+
+      _stream(db, conn, message);
+    } else {
+      const embeded = new RichEmbed()
+        .setColor(color)
+        .setTitle('Berhasil memutar semua lagu')
+        .setDescription('Meninggalkan channel ...');
+
+      message.channel.send(embeded);
+      return message.member.voiceChannel.leave();
+    }
   }
 }
 
 const _handlerSearch = (db, conn, message, songid) => {
   get(`${baseJooxUrl}web_get_songinfo`, {
-      params: {
-        country: "id",
-        lang: "en",
-        songid: songid,
-      }
-    })
+    params: {
+      country: "id",
+      lang: "en",
+      songid: songid,
+    }
+  })
     .then(res => {
       db
         .get('queue')

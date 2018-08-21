@@ -4,7 +4,7 @@ import { info } from 'winston';
 import low from 'lowdb';
 import Memory from 'lowdb/adapters/Memory';
 const db = low(new Memory());
-db.defaults({ queue: [], search: [], repeats: [] }).write();
+db.defaults({ queue: [], search: [], repeats: [], prequeue: [] }).write();
 import { symbol, token } from './config';
 import { _handlerSearch } from './utils';
 

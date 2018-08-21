@@ -2,16 +2,18 @@ import { RichEmbed } from 'discord.js';
 import { color, symbol } from '../config';
 
 export default (db, message) => {
-  let playerRepeat = db.get('repeats').find({ guildid: message.guild.id });
+  let playerRepeat = db.get('repeats').find({ guildid: message.guild.id }).value();
 
-  if (typeof playerRepeat.value() === 'undefined') {
-    db.get('repeats').push({ guildid: message.guild.id, repeat: true }).write();
+  if (typeof playerRepeat === 'undefined') {
+    db.get('repeats').push({ guildid: message.guild.id, repeat: false }).write();
   }
 
-  if (typeof playerRepeat.value() !== 'undefined' && !playerRepeat.value().repeat) {
-    playerRepeat.assign({ repeat: true }).write();
+  playerRepeat = db.get('repeats').find({ guildid: message.guild.id }).value();
+
+  if (typeof playerRepeat !== 'undefined' && playerRepeat.repeat) {
+    db.get('repeats').find({ guildid: message.guild.id }).assign({ repeat: false }).write();
   } else {
-    playerRepeat.assign({ repeat: false }).write();
+    db.get('repeats').find({ guildid: message.guild.id }).assign({ repeat: true }).write();
   }
 
   playerRepeat = db.get('repeats').find({ guildid: message.guild.id }).value();
