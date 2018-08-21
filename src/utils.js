@@ -34,10 +34,9 @@ const _stream = (db, conn, message) => {
     return dispatcher;
   } else {
     const playerRepeat = db.get('repeats').find({ guildid: message.guild.id }).value();
+    const items = db.get('prequeue').value();
 
-    if (typeof playerRepeat !== 'undefined' && playerRepeat.repeat === true) {
-      const items = db.get('prequeue').value();
-
+    if (typeof playerRepeat !== 'undefined' && playerRepeat.repeat === true && items.length !== 0) {
       items.map(o => {
         db.get('queue').push(o).write();
         return o;

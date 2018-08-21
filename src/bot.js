@@ -113,6 +113,7 @@ client.on('message', message => {
               message.member.voiceChannel.leave();
               db.get('queue').remove({ guildid: message.guild.id }).write();
               db.get('search').remove({ guildid: message.guild.id }).write();
+              db.get('prequeue').remove({ guildid: message.guild.id }).write();
             })
             .catch(info);
         }
