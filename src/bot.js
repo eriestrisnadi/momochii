@@ -44,7 +44,7 @@ client.on('message', message => {
               .push(selected.value())
               .write();
 
-            _handlerSearch(db, conn, message, selected.value().songid);
+            _handlerSearch(db, conn, message, selected.value().songid, false);
             db.get('search').remove({ guildid: message.guild.id }).write();
           })
           .catch(info);

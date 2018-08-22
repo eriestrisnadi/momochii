@@ -26,7 +26,7 @@ export default (db, message, conn, keyword) => {
           })
           .write();
 
-        _handlerSearch(db, conn, message, _first.songid);
+        _handlerSearch(db, conn, message, _first.songid, false);
       }
 
     })

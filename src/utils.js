@@ -39,12 +39,11 @@ const _stream = (db, conn, message) => {
     if (typeof playerRepeat !== 'undefined' && playerRepeat.repeat === true && items.length !== 0) {
       items.map(o => {
         db.get('queue').push(o).write();
+        _handlerSearch(db, conn, message, o.songid, true);
+        db.get('prequeue').remove(o).write();
+
         return o;
-      })
-
-      db.get('prequeue').remove({ guildid: message.guild.id }).write();
-
-      _stream(db, conn, message);
+      });
     } else {
       const embeded = new RichEmbed()
         .setColor(color)
@@ -57,7 +56,7 @@ const _stream = (db, conn, message) => {
   }
 }
 
-const _handlerSearch = (db, conn, message, songid) => {
+const _handlerSearch = (db, conn, message, songid, repeat) => {
   get(`${baseJooxUrl}web_get_songinfo`, {
     params: {
       country: "id",
@@ -72,14 +71,16 @@ const _handlerSearch = (db, conn, message, songid) => {
         .assign({ arbitary: res.data.r320Url, thumbnail: res.data.imgSrc, duration: utc(res.data.minterval * 1000).format('mm:ss') })
         .write();
 
-      const current = db.get('queue').find({ songid: songid, guildid: message.guild.id }).value();
-      const embeded = new RichEmbed()
-        .setColor(color)
-        .setTitle(`Menambahkan "${current.title} - ${current.artist}" ke daftar lagu.`)
-        .setDescription(`Durasi ${current.duration}`)
-        .setThumbnail(current.thumbnail);
+      if (!repeat) {
+        const current = db.get('queue').find({ songid: songid, guildid: message.guild.id }).value();
+        const embeded = new RichEmbed()
+          .setColor(color)
+          .setTitle(`Menambahkan "${current.title} - ${current.artist}" ke daftar lagu.`)
+          .setDescription(`Durasi ${current.duration}`)
+          .setThumbnail(current.thumbnail);
 
-      message.channel.send(embeded);
+        message.channel.send(embeded);
+      }
 
       if (typeof conn.dispatcher === 'undefined') {
         _stream(db, conn, message);
