@@ -1,5 +1,5 @@
 import { RichEmbed } from 'discord.js';
-import { color, symbol } from '../config';
+import { color } from '../config';
 
 import skip from './skip';
 

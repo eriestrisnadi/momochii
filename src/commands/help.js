@@ -8,6 +8,8 @@ export default (message) => {
     .addField(`${symbol} help`, 'Menampilkan halaman ini.')
     .addField(`${symbol} play <nama lagu/penyanyi>`, `Memutar lagu berdasarkan kata kunci yang diberikan.`)
     .addField(`${symbol} search <nama lagu/penyanyi>`, `Mencari lagu dan memberikan kamu pilihan lagu mana yang akan ditambahkan ke dalam daftar pemutar.`)
+    .addField(`${symbol} moodlist`, 'Menampilkan daftar lagu kategori mood.')
+    .addField(`${symbol} moodplay <index/nama kategori>`, 'Memutar/menambahkan track lagu yang ada di kategori mood ke daftar pemutar.')
     .addField(`${symbol} skip`, 'Melewati lagu yang sekarang sedang diputar.')
     .addField(`${symbol} queue`, 'Menampilkan daftar lagu yang akan diputar.')
     .addField(`${symbol} repeat`, 'Mengaktifkan / mematikan putar ulang pada pemutar.')

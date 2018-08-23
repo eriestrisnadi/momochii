@@ -1,4 +1,3 @@
-import logger from 'winston';
 import { get } from 'axios';
 import { RichEmbed } from 'discord.js';
 import { color, baseJooxUrl } from '../config';

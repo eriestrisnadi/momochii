@@ -18,7 +18,7 @@ const _stream = (db, conn, message) => {
 
     dispatcher.on('end', end => {
       const playerRepeat = db.get('repeats').find({ guildid: message.guild.id }).value();
-
+      
       if (typeof playerRepeat !== 'undefined' && playerRepeat.repeat === true) {
         db.get('prequeue').push(item).write();
       }

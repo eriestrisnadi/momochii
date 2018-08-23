@@ -1,5 +1,5 @@
 import { RichEmbed } from 'discord.js';
-import { color, symbol } from '../config';
+import { color } from '../config';
 
 export default (db, message) => {
   let playerRepeat = db.get('repeats').find({ guildid: message.guild.id }).value();

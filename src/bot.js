@@ -4,17 +4,18 @@ import { info } from 'winston';
 import low from 'lowdb';
 import Memory from 'lowdb/adapters/Memory';
 const db = low(new Memory());
-db.defaults({ queue: [], search: [], repeats: [], prequeue: [] }).write();
 import { symbol, token } from './config';
 import { _handlerSearch } from './utils';
 
-import play from './commands/play';
-import skip from './commands/skip';
-import queue from './commands/queue';
-import search from './commands/search';
-import repeat from './commands/repeat';
-import remove from './commands/remove';
-import help from './commands/help';
+import Command from './commands/index';
+
+db.defaults({
+  queue: [],
+  search: [],
+  repeats: [],
+  prequeue: [],
+  moodlist: []
+}).write();
 
 client.login(token);
 
@@ -62,7 +63,7 @@ client.on('message', message => {
         if (message.member.voiceChannel) {
           message.member.voiceChannel.join()
             .then(conn => {
-              play(db, message, conn, args.join(' '));
+              Command.play(db, message, conn, args.join(' '));
             })
             .catch(info);
         }
@@ -72,7 +73,7 @@ client.on('message', message => {
         if (message.member.voiceChannel) {
           message.member.voiceChannel.join()
             .then(conn => {
-              skip(db, message, conn);
+              Command.skip(db, message, conn);
             })
             .catch(info);
         }
@@ -82,25 +83,39 @@ client.on('message', message => {
         if (message.member.voiceChannel) {
           message.member.voiceChannel.join()
             .then(conn => {
-              queue(db, message);
+              Command.queue(db, message);
+            })
+            .catch(info);
+        }
+        break;
+
+      case 'moodlist':
+        Command.moodlist(db, message);
+        break;
+
+      case 'moodplay':
+        if (message.member.voiceChannel) {
+          message.member.voiceChannel.join()
+            .then(conn => {
+              Command.moodplay(db, message, conn, args.join(' '));
             })
             .catch(info);
         }
         break;
 
       case 'search':
-        search(db, message, args.join(' '));
+        Command.search(db, message, args.join(' '));
         break;
 
       case 'repeat':
-        repeat(db, message);
+        Command.repeat(db, message);
         break;
 
       case 'remove':
         if (message.member.voiceChannel) {
           message.member.voiceChannel.join()
             .then(conn => {
-              remove(db, message, conn, args.join(' '));
+              Command.remove(db, message, conn, args.join(' '));
             })
             .catch(info);
         }
@@ -120,7 +135,7 @@ client.on('message', message => {
         break;
 
       case 'help':
-        help(message);
+        Command.help(message);
         break;
     }
   }
