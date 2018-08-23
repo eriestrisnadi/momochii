@@ -16,7 +16,7 @@ export default (db, message, conn, keyword) => {
       }
     })
       .then(res => {
-        res.data.songlist.map(o => {
+        res.data.songlist.map((o, i) => {
           db
             .get('queue')
             .push({
@@ -27,9 +27,12 @@ export default (db, message, conn, keyword) => {
             })
             .write();
 
-            setTimeout(() => {
-              _handlerSearch(db, conn, message, o.songid, true);
-            }, 6000);
+            if (0 === i) {
+              _handlerSearch(db, conn, message, o.songid, true, false);
+            } else {
+              _handlerSearch(db, conn, message, o.songid, true, true);
+            }
+
             return o;
         });
 

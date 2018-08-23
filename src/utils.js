@@ -56,7 +56,7 @@ const _stream = (db, conn, message) => {
   }
 }
 
-const _handlerSearch = (db, conn, message, songid, repeat) => {
+const _handlerSearch = (db, conn, message, songid, repeat, withPlay = true) => {
   get(`${baseJooxUrl}web_get_songinfo`, {
     params: {
       country: "id",
@@ -82,7 +82,7 @@ const _handlerSearch = (db, conn, message, songid, repeat) => {
         message.channel.send(embeded);
       }
 
-      if (typeof conn.dispatcher === 'undefined') {
+      if (withPlay && typeof conn.dispatcher === 'undefined') {
         _stream(db, conn, message);
       }
     })
