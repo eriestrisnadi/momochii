@@ -27,13 +27,13 @@ export default (db, message, conn, keyword) => {
             })
             .write();
 
-            if (0 === i) {
-              _handlerSearch(db, conn, message, o.songid, true, false);
-            } else {
-              _handlerSearch(db, conn, message, o.songid, true, true);
-            }
 
-            return o;
+          if (0 === i) {
+            _handlerSearch(db, conn, message, o.songid, true, true);
+          } else {
+            _handlerSearch(db, conn, message, o.songid, true, false);
+          }
+          return o;
         });
 
         return message.channel.send(
