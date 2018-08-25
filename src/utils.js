@@ -14,29 +14,31 @@ const _stream = (db, conn, message) => {
 
     message.channel.send(embeded)
       .then(msg => {
-        db.get('queue').find(item).assign({msgid: msg.id}).write();
+        db.get('queue').find(item).assign({ msgid: msg.id }).write();
       });
 
-    const dispatcher = conn.playArbitraryInput(item.arbitary);
+    conn.on('ready', () => {
+      const dispatcher = conn.playArbitraryInput(item.arbitary);
 
-    dispatcher.on('end', end => {
-      item = db.get('queue').filter({ guildid: message.guild.id }).value()[0];
-      const playerRepeat = db.get('repeats').find({ guildid: message.guild.id }).value();
-      
-      if (typeof playerRepeat !== 'undefined' && playerRepeat.repeat === true) {
-        db.get('prequeue').push(item).write();
-      }
+      dispatcher.on('end', end => {
+        item = db.get('queue').filter({ guildid: message.guild.id }).value()[0];
+        const playerRepeat = db.get('repeats').find({ guildid: message.guild.id }).value();
 
-      message.channel.fetchMessage(item.msgid).then(msg => {
-        msg.delete(1000);
+        if (typeof playerRepeat !== 'undefined' && playerRepeat.repeat === true) {
+          db.get('prequeue').push(item).write();
+        }
+
+        message.channel.fetchMessage(item.msgid).then(msg => {
+          msg.delete(1000);
+        });
+
+        db
+          .get('queue')
+          .remove({ songid: item.songid, guildid: item.guildid })
+          .write();
+
+        _stream(db, conn, message);
       });
-
-      db
-        .get('queue')
-        .remove({ songid: item.songid, guildid: item.guildid })
-        .write();
-
-      _stream(db, conn, message);
     });
 
     return dispatcher;
