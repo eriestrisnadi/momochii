@@ -4,7 +4,7 @@ import { utc } from 'moment';
 import { color, baseJooxUrl } from './config';
 
 const _stream = (db, conn, message) => {
-  if (db.get('queue').value().length !== 0) {
+  if (db.get('queue').filter({ guildid: message.guild.id }).value().length !== 0) {
     let item = db.get('queue').filter({ guildid: message.guild.id }).value()[0];
     const embeded = new RichEmbed()
       .setColor(color)
@@ -36,9 +36,7 @@ const _stream = (db, conn, message) => {
         .remove({ songid: item.songid, guildid: item.guildid })
         .write();
 
-      conn.on('ready', () => {
-        _stream(db, conn, message);
-      });
+      _stream(db, conn, message);
     });
 
     return dispatcher;
