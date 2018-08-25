@@ -123,14 +123,10 @@ client.on('message', message => {
 
       case 'leave':
         if (message.member.voiceChannel) {
-          message.member.voiceChannel.join()
-            .then(conn => {
-              message.member.voiceChannel.leave();
-              db.get('queue').remove({ guildid: message.guild.id }).write();
-              db.get('search').remove({ guildid: message.guild.id }).write();
-              db.get('prequeue').remove({ guildid: message.guild.id }).write();
-            })
-            .catch(info);
+          db.get('queue').remove({ guildid: message.guild.id }).write();
+          db.get('search').remove({ guildid: message.guild.id }).write();
+          db.get('prequeue').remove({ guildid: message.guild.id }).write();
+          message.member.voiceChannel.leave();
         }
         break;
 
