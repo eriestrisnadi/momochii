@@ -16,7 +16,7 @@ export default (db, message, conn, keyword) => {
       }
     })
       .then(res => {
-        res.data.songlist.map((o, i) => {
+        res.data.songlist.forEach((o, i) => {
           db
             .get('queue')
             .push({
@@ -33,7 +33,6 @@ export default (db, message, conn, keyword) => {
           } else {
             _handlerSearch(db, conn, message, o.songid, true, false);
           }
-          return o;
         });
 
         return message.channel.send(

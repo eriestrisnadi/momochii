@@ -5,23 +5,31 @@ import { color, baseJooxUrl } from './config';
 
 const _stream = (db, conn, message) => {
   if (db.get('queue').value().length !== 0) {
-    const item = db.get('queue').filter({ guildid: message.guild.id }).value()[0];
+    let item = db.get('queue').filter({ guildid: message.guild.id }).value()[0];
     const embeded = new RichEmbed()
       .setColor(color)
       .setTitle(`:musical_note: Memutar lagu "${item.title} - ${item.artist}"`)
       .setDescription(`Durasi: ${item.duration}`)
       .setThumbnail(item.thumbnail);
 
-    message.channel.send(embeded);
+    message.channel.send(embeded)
+      .then(msg => {
+        db.get('queue').find(item).assign({msgid: msg.id}).write();
+      });
 
     const dispatcher = conn.playArbitraryInput(item.arbitary);
 
     dispatcher.on('end', end => {
+      item = db.get('queue').filter({ guildid: message.guild.id }).value()[0];
       const playerRepeat = db.get('repeats').find({ guildid: message.guild.id }).value();
       
       if (typeof playerRepeat !== 'undefined' && playerRepeat.repeat === true) {
         db.get('prequeue').push(item).write();
       }
+
+      message.channel.fetchMessage(item.msgid).then(msg => {
+        msg.delete(1000);
+      });
 
       db
         .get('queue')
