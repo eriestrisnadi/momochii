@@ -1,0 +1,5 @@
+{
+  "prefix": "momo ",
+  "token": "your-discordbot-token",
+  "musicEndpoint": "http://api-jooxtt.sanook.com/web-fcgi-bin/"
+}
