@@ -5,12 +5,20 @@ const duration = require('../duration');
 const rmMsg = require('../removeMessage');
 
 const stream = (message = new Message) => {
+  const conn = message.client.voiceConnections.get(message.guild.id);
   const queue = message.client.queue.get(message.guild.id);
-  const conn = message.member.voiceChannel.connection;
-
-  if (!message.member.voiceChannel.connection) return;
+  
+  if (!conn) return;
   if (conn.dispatcher) return;
-  if (queue.length === 0) return message.member.voiceChannel.leave();
+  if (queue.length === 0) {
+    message.channel.send(
+      new RichEmbed()
+        .setTitle(':ballot_box_with_check: Berhasil memutar semua lagu.')
+        .setDescription('Meninggalkan voice channel ...')
+    )
+    
+    return message.member.voiceChannel.leave();
+  }
 
   const song = queue[0];
 
