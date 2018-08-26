@@ -15,7 +15,7 @@ const stream = (message = new Message) => {
       new RichEmbed()
         .setTitle(':ballot_box_with_check: Berhasil memutar semua lagu.')
         .setDescription('Meninggalkan voice channel ...')
-    )
+    );
     
     return message.member.voiceChannel.leave();
   }

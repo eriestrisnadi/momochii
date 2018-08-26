@@ -1,10 +1,12 @@
 const { Message, RichEmbed } = require('discord.js');
-const { info, erro } = require('winston');
+const { info, error } = require('winston');
+const isSameChannel = require('../utils/isSameChannel');
 
 module.exports = {
   name: 'leave',
   description: 'Memerintahkan bot untuk meninggalkan voice channel.',
   execute(message = new Message) {
+    if (!isSameChannel(message)) return;
     if (
       message.member.voiceChannel
       && message.member.voiceChannel.connection
@@ -22,7 +24,7 @@ module.exports = {
           message.member.voiceChannel.leave();
           info(`Leave command requested by ${message.author.username}#${message.author.id}`);
         })
-        .catch(err => error(`Couldn't send message to user.`, err));
+        .catch(err => error('Couldn\'t send message to user.', err));
     }
   },
 };

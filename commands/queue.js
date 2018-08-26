@@ -1,9 +1,11 @@
 const { Message, RichEmbed } = require('discord.js');
+const isSameChannel = require('../utils/isSameChannel');
 
 module.exports = {
   name: 'queue',
   description: 'Menampilkan daftar lagu yang akan diputar.',
   execute(message = new Message) {
+    if (!isSameChannel(message)) return;
     if (!message.client.queue) return;
 
     const fields = message.client.queue.get(message.guild.id).map((o, i) => {

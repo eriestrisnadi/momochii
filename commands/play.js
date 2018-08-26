@@ -2,12 +2,15 @@ const { Message, RichEmbed } = require('discord.js');
 const { info, error } = require('winston');
 const search = require('../utils/music/search');
 const stream = require('../utils/music/stream');
+const isSameChannel = require('../utils/isSameChannel');
 
 module.exports = {
   name: 'play',
   description: 'Memainkan lagu berdasarkan keyword yang diberikan.',
   execute(message = new Message, args) {
     if (message.client.queue) {
+
+      if (!isSameChannel(message)) return;
 
       if (!message.client.queue.has(message.guild.id)) message.client.queue.set(message.guild.id, []);
 
@@ -36,8 +39,6 @@ module.exports = {
               .setTitle(`:musical_note: Menambahkan lagu "${song.title} - ${song.artist}" ke queue`)
               .setFooter(`Ditambahkan oleh ${song.user.username}`, song.user.displayAvatarURL)
           );
-
-          if (!message.member.voiceChannel) return;
 
           message.member.voiceChannel.join()
             .then(() => {

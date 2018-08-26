@@ -18,7 +18,7 @@ for (const file of commandFiles) {
   client.commands.set(command.name, command);
 }
 
-client.on("guildCreate", guild => {
+client.on('guildCreate', guild => {
   client.queue.set(guild.id, []);
   client.prequeue.set(guild.id, []);
   client.repeat.set(guild.id, []);
