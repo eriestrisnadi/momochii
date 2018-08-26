@@ -1,4 +1,4 @@
-# Momochii <a href="https://github.com/IndomaximTechID/storaji"><img src="https://img.shields.io/github/release/IndomaximTechID/storaji/all.svg" alt="GitHub version"></a>
+# Momochii <a href="https://github.com/lowsprofile/momochii"><img src="https://img.shields.io/github/release/lowsprofile/momochii/all.svg" alt="GitHub version"></a>
 > Discord Bot untuk memutar lagu dari JOOX!
 
 ## 2 Kebutuhan Sebelum Instalasi Bot
