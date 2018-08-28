@@ -27,6 +27,8 @@
 |skip|Melanjutkan ke lagu berikutnya.|
 |server|Menampilkan informasi server ini.|
 |moods|Menampilkan beberapa kategori playlist yang bisa diputar.|
+|leave|Memerintahkan bot untuk meninggalkan voice channel.|
+|shuffle|Mengatur ulang index daftar queue.|
 
 ## License
 MIT License © 2018-Present **[lowsprofile](https://github.com/lowsprofile)**. All rights reserved.
