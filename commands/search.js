@@ -15,7 +15,7 @@ module.exports = {
       if (!message.client.search.has(message.guild.id)) message.client.search.set(message.guild.id, []);
       if (!isSameChannel(message)) return;
 
-      const keyword = args.join();
+      const keyword = args.join('');
 
       info('Requesting to search a song ...');
       search(keyword)

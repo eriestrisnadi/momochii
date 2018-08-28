@@ -9,7 +9,16 @@ module.exports = {
     message.member.createDM().then(dm => {
       if (dm.client.commands) {
         const fields = dm.client.commands.map(command => {
-          return { name: prefix + command.name, value: command.description };
+          const description = [command.description];
+          const name = [command.name];
+          if (command.subcommands && command.subcommandTitle) {
+            description.push(`\n${command.subcommandTitle}: `);
+            name.push(`<${command.subcommandTitle}>`);
+            command.subcommands.forEach(child => {
+              description.push(`\`${child}\``);
+            });
+          }
+          return { name: prefix + name.join(' '), value: description.join(' ') };
         });
 
         dm.send(

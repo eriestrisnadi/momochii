@@ -14,7 +14,7 @@ module.exports = {
 
       if (!message.client.queue.has(message.guild.id)) message.client.queue.set(message.guild.id, []);
 
-      const keyword = args.join();
+      const keyword = args.join('');
 
       info('Requesting to search a song ...');
       search(keyword)
