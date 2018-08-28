@@ -1,9 +1,11 @@
 const { Message, RichEmbed } = require('discord.js');
+const isSameChannel = require('../utils/isSameChannel');
 
 module.exports = {
   name: 'repeat',
   description: 'Mengaktifkan/mematikan perulangan daftar queue.',
   execute(message = new Message) {
+    if (!isSameChannel(message)) return;
     const guildid = message.guild.id;
     if (!message.client.repeat.has(guildid)) message.client.repeat.set(guildid, false);
 

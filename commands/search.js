@@ -4,6 +4,7 @@ const { prefix } = require('../config.json');
 const search = require('../utils/music/search');
 const handler = require('../utils/music/handler');
 const rmMsg = require('../utils/removeMessage');
+const isSameChannel = require('../utils/isSameChannel');
 
 module.exports = {
   name: 'search',
@@ -12,6 +13,7 @@ module.exports = {
     if (message.client.search) {
       if (!message.member.voiceChannel) return;
       if (!message.client.search.has(message.guild.id)) message.client.search.set(message.guild.id, []);
+      if (!isSameChannel(message)) return;
 
       const keyword = args.join();
 

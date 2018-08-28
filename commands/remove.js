@@ -1,10 +1,12 @@
 const { Message, RichEmbed } = require('discord.js');
 const { info } = require('winston');
+const isSameChannel = require('../utils/isSameChannel');
 
 module.exports = {
   name: 'remove',
   description: 'Mengaktifkan/mematikan perulangan daftar queue.',
   execute(message = new Message, args) {
+    if (!isSameChannel(message)) return;
     const id = parseInt(args.join(''));
     if (isNaN(id) || !message.member.voiceChannel) return;
     if (!message.client.queue.has(message.guild.id)) message.client.queue.set(message.guild.id, []);

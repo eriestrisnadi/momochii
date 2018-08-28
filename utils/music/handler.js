@@ -1,12 +1,14 @@
 const { Message, RichEmbed } = require('discord.js');
 const { info, error } = require('winston');
 const stream = require('./stream');
+const isSameChannel = require('../isSameChannel');
 
 module.exports = (message = new Message) => {
   const id = parseInt(message.content);
   if (isNaN(id) || !message.client.search || !message.client.queue || !message.member.voiceChannel) return false;
   if (!message.client.search.has(message.guild.id)) message.client.search.set(message.guild.id, []);
   if (!message.client.queue.has(message.guild.id)) message.client.queue.set(message.guild.id, []);
+  if (!isSameChannel(message)) return;
 
   info('Check song if it on search list ...');
   const song = message.client.search.get(message.guild.id)[id-1];

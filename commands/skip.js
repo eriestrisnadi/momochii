@@ -1,10 +1,11 @@
 const { Message, RichEmbed } = require('discord.js');
-const { info } = require('winston');
+const isSameChannel = require('../utils/isSameChannel');
 
 module.exports = {
   name: 'skip',
   description: 'Melanjutkan ke lagu berikutnya.',
   execute(message = new Message) {
+    if (!isSameChannel(message)) return;
     if (
       message.member.voiceChannel.connection
       && message.member.voiceChannel.connection.dispatcher
@@ -20,7 +21,6 @@ module.exports = {
       )
         .then(() => {
           message.member.voiceChannel.connection.dispatcher.end();
-          info(`Resume command requested by ${message.author.username}#${message.author.id}`);
         });
     }
   },

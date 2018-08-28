@@ -18,7 +18,7 @@ for (const file of commandFiles) {
   client.commands.set(command.name, command);
 }
 
-client.on("guildCreate", guild => {
+client.on('guildCreate', guild => {
   client.queue.set(guild.id, []);
   client.prequeue.set(guild.id, []);
   client.repeat.set(guild.id, []);
@@ -45,6 +45,7 @@ client.on('message', message => {
 
   try {
     client.commands.get(command).execute(message, args);
+    info(`${command} command requested by ${message.author.username}#${message.author.id}`);
   }
   catch (err) {
     error('Couldn\'t execute the command', err);

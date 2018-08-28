@@ -2,12 +2,14 @@ const { Message, RichEmbed } = require('discord.js');
 const { info, error } = require('winston');
 const stream = require('./stream');
 const getInfo = require('./recommendInfo');
+const isSameChannel = require('../isSameChannel');
 
 module.exports = (message = new Message) => {
   const id = parseInt(message.content);
   if (isNaN(id) || !message.client.moods || !message.client.queue || !message.member.voiceChannel) return false;
   if (!message.client.moods.has(message.guild.id)) message.client.moods.set(message.guild.id, []);
   if (!message.client.queue.has(message.guild.id)) message.client.queue.set(message.guild.id, []);
+  if (!isSameChannel(message)) return;
 
   info('Check playlist if it on moods ...');
   const mood = message.client.moods.get(message.guild.id)[id - 1];
