@@ -1,5 +1,4 @@
 const { Message, RichEmbed } = require('discord.js');
-const { info } = require('winston');
 const isSameChannel = require('../utils/isSameChannel');
 
 module.exports = {
@@ -22,7 +21,6 @@ module.exports = {
       )
         .then(() => {
           message.member.voiceChannel.connection.dispatcher.resume();
-          info(`Resume command requested by ${message.author.username}#${message.author.id}`);
         });
     }
   },

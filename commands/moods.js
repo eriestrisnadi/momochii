@@ -4,6 +4,7 @@ const { prefix } = require('../config.json');
 const recommend = require('../utils/music/recommend');
 const handler = require('../utils/music/handlerMood');
 const rmMsg = require('../utils/removeMessage');
+const isSameChannel = require('../utils/isSameChannel');
 
 module.exports = {
   name: 'moods',
@@ -12,6 +13,7 @@ module.exports = {
     if (message.client.moods) {
       if (!message.member.voiceChannel) return;
       if (!message.client.moods.has(message.guild.id)) message.client.moods.set(message.guild.id, []);
+      if (!isSameChannel(message)) return;
 
       info('Requesting to get moods playlist ...');
       recommend()

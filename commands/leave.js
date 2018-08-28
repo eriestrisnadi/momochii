@@ -1,5 +1,5 @@
 const { Message, RichEmbed } = require('discord.js');
-const { info, error } = require('winston');
+const { error } = require('winston');
 const isSameChannel = require('../utils/isSameChannel');
 
 module.exports = {
@@ -22,7 +22,6 @@ module.exports = {
       )
         .then(() => {
           message.member.voiceChannel.leave();
-          info(`Leave command requested by ${message.author.username}#${message.author.id}`);
         })
         .catch(err => error('Couldn\'t send message to user.', err));
     }

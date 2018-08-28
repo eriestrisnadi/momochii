@@ -7,7 +7,7 @@ const rmMsg = require('../removeMessage');
 const stream = (message = new Message) => {
   const conn = message.client.voiceConnections.get(message.guild.id);
   const queue = message.client.queue.get(message.guild.id);
-  
+
   if (!conn) return;
   if (conn.dispatcher) return;
   if (queue.length === 0) {
@@ -16,7 +16,7 @@ const stream = (message = new Message) => {
         .setTitle(':ballot_box_with_check: Berhasil memutar semua lagu.')
         .setDescription('Meninggalkan voice channel ...')
     );
-    
+
     return message.member.voiceChannel.leave();
   }
 
@@ -58,13 +58,25 @@ const stream = (message = new Message) => {
         message.client.queue.set(message.guild.id, queue);
 
         info('Checking if queue is empty ...');
+        const users = message.client.voiceConnections.get(message.guild.id).channel.members.array();
+        if (users.length <= 1) {
+          message.client.queue.set(message.guild.id, []);
+          message.client.prequeue.set(message.guild.id, []);
+          message.client.voiceConnections.get(message.guild.id).channel.leave();
+          
+          message.channel.send(
+            new RichEmbed()
+              .setTitle(':end: Meninggalkan voice channel.')
+              .setDescription('Dikarenakan tidak ada yang mendengarkan.')
+          );
+        }
         if (queue.length === 0) {
           if (!message.client.repeat.has(message.guild.id)) message.client.repeat.set(message.guild.id, false);
           if (message.client.repeat.get(message.guild.id) === true) message.client.queue.set(
             message.guild.id,
             message.client.prequeue.get(message.guild.id)
           );
-          
+
           message.client.prequeue.set(message.guild.id, []);
         }
 

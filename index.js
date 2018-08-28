@@ -45,6 +45,7 @@ client.on('message', message => {
 
   try {
     client.commands.get(command).execute(message, args);
+    info(`${command} command requested by ${message.author.username}#${message.author.id}`);
   }
   catch (err) {
     error('Couldn\'t execute the command', err);
