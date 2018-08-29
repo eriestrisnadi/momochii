@@ -10,6 +10,7 @@ client.prequeue = new Collection();
 client.repeat = new Collection();
 client.search = new Collection();
 client.moods = new Collection();
+client.anime = new Collection();
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
@@ -24,6 +25,7 @@ client.on('guildCreate', guild => {
   client.repeat.set(guild.id, []);
   client.search.set(guild.id, []);
   client.moods.set(guild.id, []);
+  client.anime.set(guild.id, []);
   
   info(`New guild added : ${guild.name}, owned by ${guild.owner.user.username}`);
 });

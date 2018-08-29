@@ -3,17 +3,17 @@ const { Message, Collection } = require('discord.js');
 const { info, error } = require('winston');
 
 module.exports = {
-  name: 'do',
-  description: 'Memerintahkan bot untuk melakukan sebuah operasi.',
+  name: 'deactivated',
+  description: 'Memerintahkan bot untuk mematikan sebuah operasi stream.',
   execute: (message = new Message, args) => {
     args = [].concat(args);
     const command = args.shift().toLowerCase();
 
-    const commandFiles = fs.readdirSync('./commands/subcommands/do').filter(file => file.endsWith('.js'));
+    const commandFiles = fs.readdirSync('./commands/subcommands/deactivated').filter(file => file.endsWith('.js'));
     const commands = new Collection();
 
     commandFiles.map(file => {
-      const command = require(`./subcommands/do/${file}`);
+      const command = require(`./subcommands/deactivated/${file}`);
       commands.set(command.name, command);
     });
 
@@ -26,6 +26,6 @@ module.exports = {
       message.reply('Terjadi kesalahan saat menjalankan perintah tersebut!');
     }
   },
-  subcommands: ['math', 'translate'],
+  subcommands: ['anime'],
   subcommandTitle: 'operasi'
 };
