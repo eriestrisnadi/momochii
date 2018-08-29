@@ -13,6 +13,7 @@
     "mathjs": "^5.1.1",
     "moment": "^2.22.2",
     "node-opus": "^0.3.0",
+    "rss-parser": "^3.4.3",
     "winston": "^3.0.0"
   },
   "devDependencies": {
