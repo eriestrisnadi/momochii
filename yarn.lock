@@ -125,7 +125,7 @@ aws4@^1.2.1:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.8.0.tgz#f0e003d9ca9e7f59c7a508945d7b2ef9a04a542f"
 
-axios@0.18.0:
+axios@^0.18.0:
   version "0.18.0"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.18.0.tgz#32d53e4851efdc0a11993b6cd000789d70c05102"
   dependencies:
@@ -507,7 +507,7 @@ diagnostics@^1.0.1:
     enabled "1.0.x"
     kuler "1.0.x"
 
-discord.js@11.4.2:
+discord.js@^11.4.2:
   version "11.4.2"
   resolved "https://registry.yarnpkg.com/discord.js/-/discord.js-11.4.2.tgz#54586981926521572051f2a30b984aad2b49786e"
   dependencies:
@@ -703,7 +703,7 @@ fecha@^2.3.3:
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/fecha/-/fecha-2.3.3.tgz#948e74157df1a32fd1b12c3a3c3cdcb6ec9d96cd"
 
-ffmpeg-binaries@4.0.0:
+ffmpeg-binaries@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/ffmpeg-binaries/-/ffmpeg-binaries-4.0.0.tgz#698fa082c0512b1b083a1298e3fab4e41feeede3"
   dependencies:
@@ -852,7 +852,7 @@ globby@^5.0.0:
     pify "^2.0.0"
     pinkie-promise "^2.0.0"
 
-google-translate-api@2.3.0:
+google-translate-api@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/google-translate-api/-/google-translate-api-2.3.0.tgz#626730a123da0d57af3735dd707cda71cee919c7"
   dependencies:
@@ -1171,7 +1171,7 @@ make-dir@^1.0.0:
   dependencies:
     pify "^3.0.0"
 
-mathjs@5.1.1:
+mathjs@^5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/mathjs/-/mathjs-5.1.1.tgz#8010cfc4711af155addc3358d58ff138a2e27247"
   dependencies:
@@ -1218,7 +1218,7 @@ minimist@^1.2.0:
   dependencies:
     minimist "0.0.8"
 
-moment@2.22.2:
+moment@^2.22.2:
   version "2.22.2"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
 
@@ -1246,7 +1246,7 @@ nice-try@^1.0.4:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
 
-node-opus@0.3.0:
+node-opus@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/node-opus/-/node-opus-0.3.0.tgz#d84a96ead8599084cd5a9899f096ce4576980a09"
   dependencies:
@@ -1513,7 +1513,7 @@ rimraf@2, rimraf@^2.2.8, rimraf@^2.5.1, rimraf@^2.6.1:
   dependencies:
     glob "^7.0.5"
 
-rss-parser@3.4.3:
+rss-parser@^3.4.3:
   version "3.4.3"
   resolved "https://registry.yarnpkg.com/rss-parser/-/rss-parser-3.4.3.tgz#b31d11dad355c859b3d6269530a2d765c1e697aa"
   dependencies:
@@ -1864,7 +1864,7 @@ winston-transport@^4.2.0:
     readable-stream "^2.3.6"
     triple-beam "^1.2.0"
 
-winston@3.0.0:
+winston@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/winston/-/winston-3.0.0.tgz#1f0b24a96586798bcf0cd149fb07ed47cb01a1b2"
   dependencies:
